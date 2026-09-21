@@ -1,11 +1,12 @@
 function Instrucoes({ onContinuar }) {
   return (
-    <div className="h-screen w-screen bg-gradient-to-br from-roxo-escuro via-roxo to-lilas flex items-center justify-center px-4">
-      <div className="bg-branco rounded-2xl shadow-xl p-8 max-w-md w-full">
+    <div className="min-h-screen w-full bg-gradient-to-br from-roxo-escuro via-roxo to-lilas flex items-center justify-center px-4 py-6">
+      {' '}
+      <div className="bg-branco rounded-2xl shadow-xl p-5 sm:p-8 max-w-md w-full text-center">
+        {' '}
         <h2 className="text-xl font-bold text-roxo-escuro mb-4 text-center">
           Como funciona
         </h2>
-
         <ul className="text-gray-600 space-y-3 mb-6 text-left">
           <li>
             • Você vai ver <strong>80 afirmativas</strong>, uma de cada vez.
@@ -16,8 +17,8 @@ function Instrucoes({ onContinuar }) {
             resposta certa ou errada.
           </li>
           <li>
-            • Você pode <strong>voltar</strong> e mudar uma resposta anterior
-            a qualquer momento.
+            • Você pode <strong>voltar</strong> e mudar uma resposta anterior a
+            qualquer momento.
           </li>
           <li>
             • Leva em média <strong>10 a 15 minutos</strong> para concluir.
@@ -27,7 +28,6 @@ function Instrucoes({ onContinuar }) {
             com seu perfil de aprendizagem.
           </li>
         </ul>
-
         <button
           onClick={onContinuar}
           className="w-full bg-roxo-escuro hover:bg-roxo text-branco font-semibold py-2 rounded-lg transition-colors"
@@ -36,7 +36,7 @@ function Instrucoes({ onContinuar }) {
         </button>
       </div>
     </div>
-  )
+  );
 }
 
-export default Instrucoes
+export default Instrucoes;

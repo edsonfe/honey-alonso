@@ -1,31 +1,35 @@
-import { useState } from 'react'
+import { useState } from 'react';
 
 function Questionario({ afirmativas, onFinalizar }) {
-  const [indice, setIndice] = useState(0)
-  const [respostas, setRespostas] = useState(Array(afirmativas.length).fill(null))
+  const [indice, setIndice] = useState(0);
+  const [respostas, setRespostas] = useState(
+    Array(afirmativas.length).fill(null),
+  );
 
-  const afirmativaAtual = afirmativas[indice]
-  const progresso = Math.round(((indice + 1) / afirmativas.length) * 100)
+  const afirmativaAtual = afirmativas[indice];
+  const progresso = Math.round(((indice + 1) / afirmativas.length) * 100);
 
   function responder(valor) {
-    const novasRespostas = [...respostas]
-    novasRespostas[indice] = valor
-    setRespostas(novasRespostas)
+    const novasRespostas = [...respostas];
+    novasRespostas[indice] = valor;
+    setRespostas(novasRespostas);
 
     if (indice < afirmativas.length - 1) {
-      setIndice(indice + 1)
+      setIndice(indice + 1);
     } else {
-      onFinalizar(novasRespostas)
+      onFinalizar(novasRespostas);
     }
   }
 
   function voltar() {
-    if (indice > 0) setIndice(indice - 1)
+    if (indice > 0) setIndice(indice - 1);
   }
 
   return (
-    <div className="h-screen w-screen bg-gradient-to-br from-roxo-escuro via-roxo to-lilas flex items-center justify-center px-4">
-      <div className="bg-branco rounded-2xl shadow-xl p-8 max-w-md w-full">
+    <div className="min-h-screen w-full bg-gradient-to-br from-roxo-escuro via-roxo to-lilas flex items-center justify-center px-4 py-6">
+      {' '}
+      <div className="bg-branco rounded-2xl shadow-xl p-5 sm:p-8 max-w-md w-full">
+        {' '}
         {/* Barra de progresso */}
         <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
           <div
@@ -36,11 +40,10 @@ function Questionario({ afirmativas, onFinalizar }) {
         <p className="text-sm text-gray-500 mb-6">
           {indice + 1} / {afirmativas.length}
         </p>
-
-        <p className="text-lg text-gray-800 mb-8 text-center">
+        <p className="text-base sm:text-lg text-gray-800 mb-6 sm:mb-8 text-center">
+          {' '}
           {afirmativaAtual.texto}
         </p>
-
         <div className="flex gap-3 mb-4">
           <button
             onClick={() => responder(false)}
@@ -63,7 +66,6 @@ function Questionario({ afirmativas, onFinalizar }) {
             Se aplica
           </button>
         </div>
-
         {indice > 0 && (
           <button
             onClick={voltar}
@@ -74,7 +76,7 @@ function Questionario({ afirmativas, onFinalizar }) {
         )}
       </div>
     </div>
-  )
+  );
 }
 
-export default Questionario
+export default Questionario;

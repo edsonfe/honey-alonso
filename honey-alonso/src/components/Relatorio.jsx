@@ -1,164 +1,151 @@
-// src/components/Relatorio.jsx
-import { useEffect, useState } from 'react';
+import { useRef, useState } from 'react';
 import {
-  Radar,
   RadarChart,
   PolarGrid,
   PolarAngleAxis,
   PolarRadiusAxis,
+  Radar,
   ResponsiveContainer,
 } from 'recharts';
-import { estilosInfo } from '../data/estilosInfo';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import { Zap, Search, BookOpen, Wrench } from 'lucide-react';
 
-function Relatorio({ identificacao, resultado, onReiniciar }) {
-  const [statusEnvio, setStatusEnvio] = useState('enviando');
-  const { pontuacao, estiloDominante } = resultado;
-  const infoDominante = estilosInfo[estiloDominante];
+const descricoes = {
+  ativo:
+    'Aprende melhor quando está diretamente envolvido em experiências novas — gosta de agir, testar e participar ativamente.',
+  reflexivo:
+    'Prefere observar, coletar informações e analisar com calma antes de tirar conclusões.',
+  teorico:
+    'Busca lógica, coerência e estrutura — gosta de entender os princípios e modelos por trás das coisas.',
+  pragmatico:
+    'Foca na aplicação prática — gosta de testar métodos e ver utilidade real no que aprende.',
+};
 
-  const chartData = [
-    { estilo: 'Ativo', valor: pontuacao.ativo },
-    { estilo: 'Reflexivo', valor: pontuacao.reflexivo },
-    { estilo: 'Teórico', valor: pontuacao.teorico },
-    { estilo: 'Pragmático', valor: pontuacao.pragmatico },
-  ];
+const nomesEstilos = {
+  ativo: 'Ativo',
+  reflexivo: 'Reflexivo',
+  teorico: 'Teórico',
+  pragmatico: 'Pragmático',
+};
+const iconesEstilos = {
+  ativo: Zap,
+  reflexivo: Search,
+  teorico: BookOpen,
+  pragmatico: Wrench,
+};
 
-  useEffect(() => {
-    const URL_WEB_APP =
-      'https://script.google.com/macros/s/AKfycbyHSY3VE-HDd4sFzRGHhJZxjXRSrt2YRkZ6N_VGvlYYbzdDV5sCD5bohe7octP58FI_/exec';
+function Relatorio({ identificacao, resultado }) {
+  const relatorioRef = useRef(null);
+  const [gerando, setGerando] = useState(false);
 
-    if (!URL_WEB_APP || URL_WEB_APP.includes('COLOQUE_SUA_URL')) {
-      setStatusEnvio('sucesso');
-      return;
-    }
+  const dadosGrafico = Object.entries(resultado.pontuacao).map(
+    ([estilo, valor]) => ({
+      estilo: nomesEstilos[estilo],
+      valor,
+    }),
+  );
 
-    const payload = {
-      identificacao,
-      estiloDominante: infoDominante.nome,
-      ativo: pontuacao.ativo,
-      reflexivo: pontuacao.reflexivo,
-      teorico: pontuacao.teorico,
-      pragmatico: pontuacao.pragmatico,
-      data: new Date().toLocaleString('pt-BR'),
-    };
+  const IconeDominante = iconesEstilos[resultado.estiloDominante];
 
-    fetch(URL_WEB_APP, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    })
-      .then(() => setStatusEnvio('sucesso'))
-      .catch(() => setStatusEnvio('erro'));
-  }, [identificacao, pontuacao, estiloDominante, infoDominante.nome]);
-
-  // Dispara a janela de impressão/salvar em PDF nativa
-  function handleBaixarPDF() {
-    window.print();
+  async function baixarPDF() {
+    setGerando(true);
+    const canvas = await html2canvas(relatorioRef.current, {
+      scale: 2,
+      backgroundColor: '#ffffff',
+    });
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const largura = pdf.internal.pageSize.getWidth();
+    const altura = (canvas.height * largura) / canvas.width;
+    pdf.addImage(imgData, 'PNG', 0, 0, largura, altura);
+    pdf.save(`relatorio-honey-alonso-${identificacao}.pdf`);
+    setGerando(false);
   }
 
   return (
-    <div className="min-h-screen w-screen bg-gradient-to-br from-roxo-escuro via-roxo to-lilas py-8 px-4 flex flex-col items-center justify-center print:bg-white print:py-0 print:px-0">
-      <div
-        id="conteudo-relatorio"
-        className="bg-branco rounded-2xl shadow-xl p-8 max-w-2xl w-full text-gray-800 print:shadow-none print:max-w-full print:p-0"
-      >
-        <header className="border-b pb-4 mb-6 text-center">
-          <h1 className="text-2xl font-bold text-roxo-escuro">
+    <div className="min-h-screen w-full bg-gradient-to-br from-roxo-escuro via-roxo to-lilas flex items-center justify-center px-4 py-6 sm:py-8">
+      <div className="w-full max-w-2xl">
+        <div
+          ref={relatorioRef}
+          className="bg-branco rounded-2xl shadow-xl p-5 sm:p-8"
+        >
+          <h1 className="text-xl sm:text-2xl font-bold text-roxo-escuro text-center mb-1">
             Relatório de Estilo de Aprendizagem
           </h1>
-          <p className="text-sm text-gray-600 mt-1">
-            Participante:{' '}
-            <strong className="text-gray-800">{identificacao}</strong>
+          <p className="text-gray-500 text-sm sm:text-base text-center mb-6 break-words">
+            {identificacao}
           </p>
-        </header>
 
-        {/* Gráfico Radar */}
-        <div className="w-full h-64 mb-6">
-          <ResponsiveContainer width="100%" height="100%">
-            <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
-              <PolarGrid />
-              <PolarAngleAxis dataKey="estilo" stroke="#4B5563" />
-              <PolarRadiusAxis angle={30} domain={[0, 20]} />
-              <Radar
-                name="Pontuação"
-                dataKey="valor"
-                stroke="#6B21A8"
-                fill="#8B5CF6"
-                fillOpacity={0.6}
-              />
-            </RadarChart>
-          </ResponsiveContainer>
-        </div>
+          <div className="h-56 sm:h-72 mb-6">
+            <ResponsiveContainer width="100%" height="100%">
+              <RadarChart data={dadosGrafico}>
+                <PolarGrid />
+                <PolarAngleAxis dataKey="estilo" tick={{ fontSize: 12 }} />
+                <PolarRadiusAxis
+                  angle={30}
+                  domain={[0, 20]}
+                  tick={false}
+                  axisLine={false}
+                />
+                <Radar
+                  dataKey="valor"
+                  stroke="#6B21A8"
+                  fill="#9333EA"
+                  fillOpacity={0.5}
+                />
+              </RadarChart>
+            </ResponsiveContainer>
+          </div>
 
-        {/* Estilo Dominante */}
-        <div className="bg-lilas/20 border border-roxo/30 rounded-xl p-5 mb-6 print:border-gray-300">
-          <span className="text-xs font-bold uppercase tracking-wider text-roxo-escuro block mb-1">
-            Estilo Dominante
-          </span>
-          <h2 className="text-xl font-bold text-roxo mb-2">
-            {infoDominante.nome}
-          </h2>
-          <p className="text-sm text-gray-700 leading-relaxed mb-4">
-            {infoDominante.descricao}
-          </p>
-          <ul className="text-xs text-gray-600 space-y-1">
-            {infoDominante.caracteristicas.map((item, idx) => (
-              <li key={idx}>• {item}</li>
-            ))}
-          </ul>
-        </div>
+          <div className="bg-lilas/20 border border-lilas rounded-xl p-4 mb-6 flex flex-col items-center text-center">
+            <IconeDominante
+              className="w-8 h-8 text-roxo-escuro mb-2"
+              strokeWidth={2}
+            />
+            <p className="text-sm text-gray-500 mb-1">
+              Seu estilo predominante
+            </p>
+            <p className="text-lg sm:text-xl font-bold text-roxo-escuro">
+              {nomesEstilos[resultado.estiloDominante]}
+            </p>
+            <p className="text-gray-600 text-sm sm:text-base mt-2">
+              {descricoes[resultado.estiloDominante]}
+            </p>
+          </div>
 
-        {/* Resumo Numérico */}
-        <div className="grid grid-cols-4 gap-2 text-center mb-6">
-          <div className="bg-gray-50 p-3 rounded-lg border">
-            <span className="block text-xs text-gray-500">Ativo</span>
-            <span className="text-lg font-bold text-roxo-escuro">
-              {pontuacao.ativo}
-            </span>
-          </div>
-          <div className="bg-gray-50 p-3 rounded-lg border">
-            <span className="block text-xs text-gray-500">Reflexivo</span>
-            <span className="text-lg font-bold text-roxo-escuro">
-              {pontuacao.reflexivo}
-            </span>
-          </div>
-          <div className="bg-gray-50 p-3 rounded-lg border">
-            <span className="block text-xs text-gray-500">Teórico</span>
-            <span className="text-lg font-bold text-roxo-escuro">
-              {pontuacao.teorico}
-            </span>
-          </div>
-          <div className="bg-gray-50 p-3 rounded-lg border">
-            <span className="block text-xs text-gray-500">Pragmático</span>
-            <span className="text-lg font-bold text-roxo-escuro">
-              {pontuacao.pragmatico}
-            </span>
+          <div className="grid grid-cols-2 gap-2 sm:gap-3">
+            {Object.entries(resultado.pontuacao).map(([estilo, valor]) => {
+              const Icone = iconesEstilos[estilo];
+              return (
+                <div
+                  key={estilo}
+                  className="border border-gray-200 rounded-lg p-3 flex items-center gap-2"
+                >
+                  <Icone
+                    className="w-5 h-5 text-roxo shrink-0"
+                    strokeWidth={2}
+                  />
+                  <div>
+                    <p className="text-xs sm:text-sm font-semibold text-roxo-escuro">
+                      {nomesEstilos[estilo]}
+                    </p>
+                    <p className="text-gray-500 text-xs sm:text-sm">
+                      {valor} / 20
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
-        {/* Status do envio (oculto na impressão) */}
-        {statusEnvio === 'sucesso' && (
-          <p className="text-xs text-emerald-600 text-center mb-4 print:hidden">
-            ✓ Resultado salvo com sucesso na planilha.
-          </p>
-        )}
-      </div>
-
-      {/* Botões de Ação (escondidos no PDF/Impressão) */}
-      <div className="max-w-2xl w-full mt-4 flex gap-4 print:hidden">
         <button
-          type="button"
-          onClick={handleBaixarPDF}
-          className="flex-1 bg-branco hover:bg-gray-100 text-roxo-escuro font-semibold py-3 rounded-xl shadow-md transition-colors text-center cursor-pointer"
+          onClick={baixarPDF}
+          disabled={gerando}
+          className="mt-6 w-full bg-branco hover:bg-lilas/30 text-roxo-escuro font-semibold py-3 rounded-lg transition-colors disabled:opacity-60 text-sm sm:text-base"
         >
-          Baixar Relatório (PDF)
-        </button>
-        <button
-          type="button"
-          onClick={onReiniciar}
-          className="bg-roxo-escuro hover:bg-roxo text-branco font-semibold px-6 py-3 rounded-xl shadow-md transition-colors text-center cursor-pointer"
-        >
-          Refazer Teste
+          {gerando ? 'Gerando PDF...' : 'Baixar relatório em PDF'}
         </button>
       </div>
     </div>
