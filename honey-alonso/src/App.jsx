@@ -1,37 +1,60 @@
-import {
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  Radar,
-  ResponsiveContainer,
-} from 'recharts';
-
-const dadosTeste = [
-  { estilo: 'Ativo', valor: 12 },
-  { estilo: 'Reflexivo', valor: 8 },
-  { estilo: 'Teórico', valor: 15 },
-  { estilo: 'Pragmático', valor: 10 },
-];
+// src/App.jsx
+import { useState } from 'react';
+import Boasvindas from './components/Boasvindas';
+import Instrucoes from './components/Instrucoes';
+import Questionario from './components/Questionario';
+import Relatorio from './components/Relatorio';
+import { afirmativas } from './data/afirmativas';
+import { calcularResultado } from './utils/calcularResultado';
 
 function App() {
-  return (
-    <div className="h-screen w-screen bg-gradient-to-br from-roxo-escuro via-roxo to-lilas flex items-center justify-center">
-      <div className="bg-branco rounded-2xl p-6 w-96 h-96">
-        <ResponsiveContainer width="100%" height="100%">
-          <RadarChart data={dadosTeste}>
-            <PolarGrid />
-            <PolarAngleAxis dataKey="estilo" />
-            <Radar
-              dataKey="valor"
-              stroke="#6B21A8"
-              fill="#9333EA"
-              fillOpacity={0.5}
-            />
-          </RadarChart>
-        </ResponsiveContainer>
-      </div>
-    </div>
-  );
+  const [tela, setTela] = useState('boasvindas');
+  const [identificacao, setIdentificacao] = useState('');
+  const [respostasFinais, setRespostasFinais] = useState(null);
+
+  function handleIniciar(valor) {
+    setIdentificacao(valor);
+    setTela('instrucoes');
+  }
+
+  function handleContinuarInstrucoes() {
+    setTela('questionario');
+  }
+
+  function handleFinalizarQuestionario(respostas) {
+    const resultado = calcularResultado(afirmativas, respostas);
+    setRespostasFinais(resultado);
+    setTela('relatorio');
+  }
+
+  function handleReiniciar() {
+    setIdentificacao('');
+    setRespostasFinais(null);
+    setTela('boasvindas');
+  }
+
+  if (tela === 'boasvindas') return <Boasvindas onIniciar={handleIniciar} />;
+  if (tela === 'instrucoes')
+    return <Instrucoes onContinuar={handleContinuarInstrucoes} />;
+  // src/App.jsx (trecho da renderização)
+  if (tela === 'questionario')
+    return (
+      <Questionario
+        key={identificacao} // Garante o reset do estado interno ao reiniciar
+        afirmativas={afirmativas}
+        onFinalizar={handleFinalizarQuestionario}
+      />
+    );
+  if (tela === 'relatorio')
+    return (
+      <Relatorio
+        identificacao={identificacao}
+        resultado={respostasFinais}
+        onReiniciar={handleReiniciar}
+      />
+    );
+
+  return null;
 }
 
 export default App;
