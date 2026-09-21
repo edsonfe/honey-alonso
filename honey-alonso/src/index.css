@@ -1,0 +1,8 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-roxo-escuro: #6b21a8;
+  --color-roxo: #9333ea;
+  --color-lilas: #c4b5fd;
+  --color-branco: #ffffff;
+}
