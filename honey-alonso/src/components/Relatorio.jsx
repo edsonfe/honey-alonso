@@ -23,7 +23,8 @@ function Relatorio({ identificacao, resultado, onReiniciar }) {
   ];
 
   useEffect(() => {
-    const URL_WEB_APP = 'COLOQUE_SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI';
+    const URL_WEB_APP =
+      'https://script.google.com/macros/s/AKfycbyHSY3VE-HDd4sFzRGHhJZxjXRSrt2YRkZ6N_VGvlYYbzdDV5sCD5bohe7octP58FI_/exec';
 
     if (!URL_WEB_APP || URL_WEB_APP.includes('COLOQUE_SUA_URL')) {
       setStatusEnvio('sucesso');
