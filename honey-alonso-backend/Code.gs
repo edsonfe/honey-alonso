@@ -8,7 +8,7 @@ function doPost(e) {
     const aba = planilha.getSheetByName(SHEET_NAME) || planilha.insertSheet(SHEET_NAME)
 
     if (aba.getLastRow() === 0) {
-      aba.appendRow(['Data/Hora', 'Nome', 'E-mail', 'Ativo', 'Reflexivo', 'Teórico', 'Pragmático', 'Estilo Dominante'])
+      aba.appendRow(['Data/Hora', 'Nome', 'E-mail', 'Ativo', 'Reflexivo', 'Teórico', 'Pragmático', 'Estilo Dominante', 'Autorização de envio por e-mail'])
     }
 
     aba.appendRow([
@@ -20,6 +20,7 @@ function doPost(e) {
       dados.pontuacao.teorico,
       dados.pontuacao.pragmatico,
       dados.estiloDominante,
+      dados.autorizacaoEmail ? 'Sim' : 'Não',
     ])
 
     return ContentService

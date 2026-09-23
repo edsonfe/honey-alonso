@@ -1,12 +1,17 @@
 const URL_APPS_SCRIPT =
-  'https://script.google.com/macros/s/AKfycbz1CG2zF1o1uzUCdRYq5JCN8VA411lsGTN199GJpquJpv4aALwhJghi2qt8riyBHBjvbg/exec';
+  'https://script.google.com/macros/s/AKfycbxQmIuzpBRjJ4wTCo_c19DB-EH1OZATVuHRMAW4_sSvKgbZNkx18hCuCrnpz1dyMMH4uA/exec';
 
-export async function enviarResultado(nome, email, resultado) {
+export async function enviarResultado(
+  nome,
+  email,
+  resultado,
+  autorizacaoEmail,
+) {
   try {
     const resposta = await fetch(URL_APPS_SCRIPT, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ nome, email, ...resultado }),
+      body: JSON.stringify({ nome, email, autorizacaoEmail, ...resultado }),
     });
     return await resposta.json();
   } catch (erro) {
