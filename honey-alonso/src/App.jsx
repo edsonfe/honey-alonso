@@ -3,6 +3,7 @@ import Boasvindas from './components/Boasvindas';
 import Instrucoes from './components/Instrucoes';
 import Questionario from './components/Questionario';
 import Relatorio from './components/Relatorio';
+import { Footer } from './components/Footer';
 import { afirmativas } from './data/afirmativas';
 import { calcularResultado } from './utils/calcularResultado';
 import { enviarResultado } from './utils/enviarResultado';
@@ -25,24 +26,44 @@ function App() {
 
   function handleFinalizarQuestionario(respostas) {
     const resultadoCalculado = calcularResultado(afirmativas, respostas);
+
     setResultado(resultadoCalculado);
-    setTela('relatorio') - enviarResultado(nome, email, resultadoCalculado);
+    setTela('relatorio');
+    enviarResultado(nome, email, resultadoCalculado);
   }
 
-  if (tela === 'boasvindas') return <Boasvindas onIniciar={handleIniciar} />;
-  if (tela === 'instrucoes')
-    return <Instrucoes onContinuar={handleContinuarInstrucoes} />;
-  if (tela === 'questionario')
-    return (
-      <Questionario
-        afirmativas={afirmativas}
-        onFinalizar={handleFinalizarQuestionario}
-      />
-    );
-  if (tela === 'relatorio')
-    return <Relatorio nome={nome} email={email} resultado={resultado} />;
+  function renderTela() {
+    if (tela === 'boasvindas') {
+      return <Boasvindas onIniciar={handleIniciar} />;
+    }
 
-  return null;
+    if (tela === 'instrucoes') {
+      return <Instrucoes onContinuar={handleContinuarInstrucoes} />;
+    }
+
+    if (tela === 'questionario') {
+      return (
+        <Questionario
+          afirmativas={afirmativas}
+          onFinalizar={handleFinalizarQuestionario}
+        />
+      );
+    }
+
+    if (tela === 'relatorio') {
+      return <Relatorio nome={nome} email={email} resultado={resultado} />;
+    }
+
+    return null;
+  }
+
+  return (
+    <div className="h-screen flex flex-col overflow-hidden">
+      <main className="flex-1 min-h-0">{renderTela()}</main>
+
+      <Footer />
+    </div>
+  );
 }
 
 export default App;

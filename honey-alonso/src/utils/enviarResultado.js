@@ -1,6 +1,5 @@
-const URL_APPS_SCRIPT =
-  'https://script.google.com/macros/s/AKfycbxQmIuzpBRjJ4wTCo_c19DB-EH1OZATVuHRMAW4_sSvKgbZNkx18hCuCrnpz1dyMMH4uA/exec';
-
+export const URL_APPS_SCRIPT =
+  'https://script.google.com/macros/s/AKfycbw0DIvcjB69JIY1sN-oGB4PqUE3ib9vkObyczmYZ-BH_yuwuPD_2g2KToOG1cRm4vNNtg/exec';
 export async function enviarResultado(
   nome,
   email,

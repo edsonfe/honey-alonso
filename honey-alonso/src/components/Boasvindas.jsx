@@ -38,9 +38,10 @@ function Boasvindas({ onIniciar }) {
           Questionário Honey-Alonso
         </h1>
         <p className="text-gray-600 text-sm sm:text-base mb-6">
-          Descubra seu estilo de aprendizagem predominante — Ativo, Reflexivo,
-          Teórico ou Pragmático — respondendo a uma série de afirmativas
-          simples. Ao final, você recebe um relatório instantâneo e detalhado.
+          Descubra seu estilo de aprendizagem predominante
+          <br />
+          ·Ativo, Reflexivo, Teórico, Pragmático. <br />
+          Responda a uma série de afirmativas simples. Receba instantâneamente seu resultado.
         </p>
         <label className="block text-left text-sm font-medium text-gray-700 mb-1">
           Nome

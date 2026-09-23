@@ -13,19 +13,19 @@ function Instrucoes({ onContinuar }) {
           </li>
           <li>
             • Para cada uma, indique se ela <strong>se aplica</strong> ou{' '}
-            <strong>não se aplica</strong> ao seu jeito de ser — não existe
-            resposta certa ou errada.
+            <strong>não se aplica</strong> ao seu jeito de ser (não existe
+            resposta certa ou errada.)
           </li>
           <li>
             • Você pode <strong>voltar</strong> e mudar uma resposta anterior a
             qualquer momento.
           </li>
           <li>
-            • Leva em média <strong>10 a 15 minutos</strong> para concluir.
-          </li>
-          <li>
             • Ao final, você recebe um <strong>relatório instantâneo</strong>{' '}
             com seu perfil de aprendizagem.
+          </li>
+          <li>
+            • Receba um relatório detalhado com <strong>dicas personalizadas</strong> para seu perfil de aprendizagem. {' '}
           </li>
         </ul>
         <button
