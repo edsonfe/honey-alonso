@@ -13,10 +13,12 @@ function App() {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [resultado, setResultado] = useState(null);
+  const [whatsapp, setWhatsapp] = useState('');
 
-  function handleIniciar(nomeInformado, emailInformado) {
+  function handleIniciar(nomeInformado, emailInformado, whatsappInformado) {
     setNome(nomeInformado);
     setEmail(emailInformado);
+    setWhatsapp(whatsappInformado);
     setTela('instrucoes');
   }
 
@@ -51,7 +53,7 @@ function App() {
     }
 
     if (tela === 'relatorio') {
-      return <Relatorio nome={nome} email={email} resultado={resultado} />;
+      return <Relatorio nome={nome} email={email} resultado={resultado} whatsapp={whatsapp} />;
     }
 
     return null;

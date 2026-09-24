@@ -13,6 +13,7 @@ function doPost(e) {
         'Data/Hora',
         'Nome',
         'E-mail',
+        'Whatssap',
         'Ativo',
         'Reflexivo',
         'Teórico',
@@ -25,6 +26,7 @@ function doPost(e) {
     const p = dados.pontuacao || dados;
     const nome = dados.nome || '';
     const email = dados.email || '';
+    const whatssap = dados.whatssap || '';
     const autorizacao = dados.autorizacaoEmail ? 'Sim' : 'Não';
     const ultimaLinha = aba.getLastRow();
 
@@ -47,6 +49,7 @@ function doPost(e) {
       new Date(),
       nome,
       email,
+      whatssap,
       p.ativo !== undefined ? p.ativo : dados.ativo || 0,
       p.reflexivo !== undefined ? p.reflexivo : dados.reflexivo || 0,
       p.teorico !== undefined ? p.teorico : dados.teorico || 0,

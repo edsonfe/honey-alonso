@@ -4,10 +4,16 @@ import logo from '../assets/Logo_audaz.png';
 function Boasvindas({ onIniciar }) {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
+  const [whatsapp, setWhatsapp] = useState('');
   const [erro, setErro] = useState('');
 
   function validarEmail(valor) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor);
+  }
+
+  function validarWhatsapp(valor) {
+    const apenasDigitos = valor.replace(/\D/g, '');
+    return apenasDigitos.length >= 10; // DDD + número, cobre fixo e celular
   }
 
   function handleIniciar() {
@@ -17,6 +23,10 @@ function Boasvindas({ onIniciar }) {
     }
     if (!validarEmail(email.trim())) {
       setErro('Preencha um e-mail válido para continuar.');
+      return;
+    }
+    if (!validarWhatsapp(whatsapp)) {
+      setErro('Preencha um número de WhatsApp válido, com DDD + dígitos.');
       return;
     }
     setErro('');
@@ -41,7 +51,8 @@ function Boasvindas({ onIniciar }) {
           Descubra seu estilo de aprendizagem predominante
           <br />
           ·Ativo, Reflexivo, Teórico, Pragmático. <br />
-          Responda a uma série de afirmativas simples. Receba instantâneamente seu resultado.
+          Responda a uma série de afirmativas simples e receba instantâneamente
+          seu resultado.
         </p>
         <label className="block text-left text-sm font-medium text-gray-700 mb-1">
           Nome
@@ -61,6 +72,17 @@ function Boasvindas({ onIniciar }) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Digite seu e-mail"
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 mb-1 focus:outline-none focus:ring-2 focus:ring-roxo"
+        />
+        {erro && <p className="text-red-500 text-sm mb-3">{erro}</p>}
+        <label className="block text-left text-sm font-medium text-gray-700 mb-1">
+          WhatsApp
+        </label>
+        <input
+          type="tel"
+          value={whatsapp}
+          onChange={(e) => setWhatsapp(e.target.value)}
+          placeholder="(00) 00000-0000"
           className="w-full border border-gray-300 rounded-lg px-3 py-2 mb-1 focus:outline-none focus:ring-2 focus:ring-roxo"
         />
         {erro && <p className="text-red-500 text-sm mb-3">{erro}</p>}
