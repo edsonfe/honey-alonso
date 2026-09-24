@@ -5,8 +5,7 @@ export function Footer() {
 
   return (
     <footer>
-      © {anoAtual} Todos os direitos reservados · 
-      Desenvolvido por <strong>Colégio Audaz</strong>
+      © {anoAtual} Todos os direitos reservados
     </footer>
   );
 }
