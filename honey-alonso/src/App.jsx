@@ -31,7 +31,7 @@ function App() {
 
     setResultado(resultadoCalculado);
     setTela('relatorio');
-    enviarResultado(nome, email, resultadoCalculado);
+    enviarResultado(nome, email, whatsapp, resultadoCalculado, false);
   }
 
   function renderTela() {

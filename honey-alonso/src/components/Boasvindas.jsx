@@ -1,62 +1,50 @@
-import { useState } from 'react';
-import logo from '../assets/Logo_audaz.png';
+import { useState } from 'react'
 
 function Boasvindas({ onIniciar }) {
-  const [nome, setNome] = useState('');
-  const [email, setEmail] = useState('');
-  const [whatsapp, setWhatsapp] = useState('');
-  const [erro, setErro] = useState('');
+  const [nome, setNome] = useState('')
+  const [email, setEmail] = useState('')
+  const [whatsapp, setWhatsapp] = useState('')
+  const [erro, setErro] = useState('')
 
   function validarEmail(valor) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor);
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(valor)
   }
 
   function validarWhatsapp(valor) {
-    const apenasDigitos = valor.replace(/\D/g, '');
-    return apenasDigitos.length >= 10; // DDD + número, cobre fixo e celular
+    const apenasDigitos = valor.replace(/\D/g, '')
+    return apenasDigitos.length >= 10 // DDD + número, cobre fixo e celular
   }
 
   function handleIniciar() {
     if (nome.trim() === '') {
-      setErro('Preencha seu nome para continuar.');
-      return;
+      setErro('Preencha seu nome para continuar.')
+      return
     }
     if (!validarEmail(email.trim())) {
-      setErro('Preencha um e-mail válido para continuar.');
-      return;
+      setErro('Preencha um e-mail válido para continuar.')
+      return
     }
     if (!validarWhatsapp(whatsapp)) {
-      setErro('Preencha um número de WhatsApp válido, com DDD + dígitos.');
-      return;
+      setErro('Preencha um número de WhatsApp válido, com DDD.')
+      return
     }
-    setErro('');
-    onIniciar(nome.trim(), email.trim());
+    setErro('')
+    onIniciar(nome.trim(), email.trim(), whatsapp.trim())
   }
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-roxo-escuro via-roxo to-lilas flex items-center justify-center px-4 py-6">
-      {' '}
       <div className="bg-branco rounded-2xl shadow-xl p-5 sm:p-8 max-w-md w-full text-center">
-        {' '}
-        {/* LOGO */}
-        <img
-          src={logo}
-          alt="Logo do Questionário Honey-Alonso"
-          className="w-50 h-auto mx-auto mb-5"
-        />
         <h1 className="text-xl sm:text-2xl font-bold text-roxo-escuro mb-2">
           Questionário Honey-Alonso
         </h1>
         <p className="text-gray-600 text-sm sm:text-base mb-6">
-          Descubra seu estilo de aprendizagem predominante
-          <br />
-          ·Ativo, Reflexivo, Teórico, Pragmático. <br />
-          Responda a uma série de afirmativas simples e receba instantâneamente
-          seu resultado.
+          Descubra seu estilo de aprendizagem predominante — Ativo, Reflexivo,
+          Teórico ou Pragmático — respondendo a uma série de afirmativas simples.
+          Ao final, você recebe um relatório instantâneo e detalhado.
         </p>
-        <label className="block text-left text-sm font-medium text-gray-700 mb-1">
-          Nome
-        </label>
+
+        <label className="block text-left text-sm font-medium text-gray-700 mb-1">Nome</label>
         <input
           type="text"
           value={nome}
@@ -64,20 +52,17 @@ function Boasvindas({ onIniciar }) {
           placeholder="Digite seu nome"
           className="w-full border border-gray-300 rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-roxo"
         />
-        <label className="block text-left text-sm font-medium text-gray-700 mb-1">
-          E-mail
-        </label>
+
+        <label className="block text-left text-sm font-medium text-gray-700 mb-1">E-mail</label>
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Digite seu e-mail"
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 mb-1 focus:outline-none focus:ring-2 focus:ring-roxo"
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-roxo"
         />
-        {erro && <p className="text-red-500 text-sm mb-3">{erro}</p>}
-        <label className="block text-left text-sm font-medium text-gray-700 mb-1">
-          WhatsApp
-        </label>
+
+        <label className="block text-left text-sm font-medium text-gray-700 mb-1">WhatsApp</label>
         <input
           type="tel"
           value={whatsapp}
@@ -86,6 +71,7 @@ function Boasvindas({ onIniciar }) {
           className="w-full border border-gray-300 rounded-lg px-3 py-2 mb-1 focus:outline-none focus:ring-2 focus:ring-roxo"
         />
         {erro && <p className="text-red-500 text-sm mb-3">{erro}</p>}
+
         <button
           onClick={handleIniciar}
           className="mt-4 w-full bg-roxo-escuro hover:bg-roxo text-branco font-semibold py-2 rounded-lg transition-colors"
@@ -94,7 +80,7 @@ function Boasvindas({ onIniciar }) {
         </button>
       </div>
     </div>
-  );
+  )
 }
 
-export default Boasvindas;
+export default Boasvindas

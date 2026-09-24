@@ -1,11 +1,12 @@
 export const URL_APPS_SCRIPT =
-  'https://script.google.com/macros/s/AKfycbxccxsC3kW5eF-cFw_AHR7CvkljdyoNMYoMbec2WpsxRH7tUI-1AY5XDeMANllK4TVUCg/exec';
+  'https://script.google.com/macros/s/AKfycbwXrr4B831D99LR-ZclLsFPUH3M3c-CgKSACzY1gvmiXBDd0yQArG9Tv_Xgtes_Rv-9EQ/exec';
+
 export async function enviarResultado(
   nome,
   email,
   whatsapp,
   resultado,
-  autorizacaoEmail,
+  autorizacaoEmail = false,
 ) {
   try {
     const resposta = await fetch(URL_APPS_SCRIPT, {

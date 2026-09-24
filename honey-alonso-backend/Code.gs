@@ -13,7 +13,7 @@ function doPost(e) {
         'Data/Hora',
         'Nome',
         'E-mail',
-        'Whatssap',
+        'WhatsApp',
         'Ativo',
         'Reflexivo',
         'Teórico',
@@ -26,7 +26,7 @@ function doPost(e) {
     const p = dados.pontuacao || dados;
     const nome = dados.nome || '';
     const email = dados.email || '';
-    const whatssap = dados.whatssap || '';
+    const whatsapp = dados.whatsapp || '';
     const autorizacao = dados.autorizacaoEmail ? 'Sim' : 'Não';
     const ultimaLinha = aba.getLastRow();
 
@@ -37,7 +37,7 @@ function doPost(e) {
 
       if (UltimoNome === nome && ultimoEmail === email) {
         // Se for uma duplicata imediata, apenas atualiza a coluna de autorização (coluna 9)
-        aba.getRange(ultimaLinha, 9).setValue(autorizacao);
+        aba.getRange(ultimaLinha, 10).setValue(autorizacao);
         return ContentService.createTextOutput(
           JSON.stringify({ sucesso: true, mensagem: 'Registro atualizado' }),
         ).setMimeType(ContentService.MimeType.JSON);
@@ -49,7 +49,7 @@ function doPost(e) {
       new Date(),
       nome,
       email,
-      whatssap,
+      whatsapp,
       p.ativo !== undefined ? p.ativo : dados.ativo || 0,
       p.reflexivo !== undefined ? p.reflexivo : dados.reflexivo || 0,
       p.teorico !== undefined ? p.teorico : dados.teorico || 0,
