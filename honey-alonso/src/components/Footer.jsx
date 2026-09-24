@@ -3,9 +3,5 @@ import React from 'react';
 export function Footer() {
   const anoAtual = new Date().getFullYear();
 
-  return (
-    <footer>
-      © {anoAtual} Todos os direitos reservados
-    </footer>
-  );
+  return <footer>© {anoAtual} Todos os direitos reservados</footer>;
 }
